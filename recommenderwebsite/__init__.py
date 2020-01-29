@@ -6,6 +6,7 @@ from flask_mail import Mail
 from recommenderwebsite.config import Config
 from betterreads import client
 from pathlib import Path
+from dotenv import load_dotenv
 import tmdbsimple as tmdb
 import pickle
 import os
@@ -18,6 +19,8 @@ login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 
 mail = Mail()
+current_working_directory = Path(os.getcwd())
+load_dotenv(os.path.join(current_working_directory, 'variables.env'))
 
 goodreadsAPIKey = os.getenv('goodreadsAPIKey')
 goodreadsAPISecret = os.getenv('goodreadsAPISecret')
@@ -25,7 +28,6 @@ gc = client.GoodreadsClient(goodreadsAPIKey,goodreadsAPISecret)
 
 tmdb.API_KEY = os.getenv('tmdbAPIKey')
 
-current_working_directory = Path(os.getcwd())
 model = pickle.load(open(current_working_directory/'recommenderwebsite/word2vec.pkl','rb'))
 movie_vectors = pickle.load(open(current_working_directory/'recommenderwebsite/movies_overview_vectors.pkl','rb'))
 book_vectors = pickle.load(open(current_working_directory/'recommenderwebsite/books_description_vectors.pkl','rb'))

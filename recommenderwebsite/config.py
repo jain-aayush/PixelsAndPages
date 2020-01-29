@@ -1,4 +1,9 @@
 import os
+from dotenv import load_dotenv
+from pathlib import Path
+
+current_working_directory = Path(os.getcwd())
+load_dotenv(os.path.join(current_working_directory, 'variables.env'))
 
 class Config:
 	SECRET_KEY = os.getenv("recsysSecretKey")
