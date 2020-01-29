@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for res in results %}
+        <article class="media content-section">
+          <div class="media-body">
+            <a class="article-title" href="#">{{ res }}</a>
+          </div>
+        </article>
+    {% endfor %}
+{% endblock content %}

@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %} 
+  <div align = "center" style="height: 400px; width: 700px;
+  background-image:url(static/Logo.jpeg);">
+  </div>
+  {% if current_user.is_authenticated %}
+  {% else %}
+  <div style="margin: 50px"><a href="{{ url_for('users.register') }}">Join Pixels & Pages Now! SignUp</a> </div>
+  {% endif %}
+{% endblock content %}

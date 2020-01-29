@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Search Movie To Add</legend>
+                <div class="form-group">
+                    {{ form.search_term.label(class="form-control-label") }}
+                    {% if form.search_term.errors %}
+                        {{ form.search_term(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.search_term.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>genre
+                    {% else %}
+                        {{ form.search_term(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+            <div class="form-group">
+                <small>This might take some time</small>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

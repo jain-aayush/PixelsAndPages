@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div >
+    <span><h3>Movies Watched By You:</h3></span>
+    <P align=right><small><a href="{{ url_for('movies.search_movie') }}">Add More +</a></small></P>
+  </div>
+  <hr>
+    {% for movie in movies %}
+        <article class="media content-section">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="#">{{ movie.director }}</a>
+              <span style="float:right;">
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal{{ movie.movie_id }}"><small>Remove -</small></button></span>
+            </div>
+            <a class="article-title" href="#">{{ movie.title }}</a>
+          </div>
+        </article>
+      {% endfor %}
+      {% for movie in movies %}
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal{{movie.movie_id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Remove from Watched? </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="{{ url_for('movies.delete_movie', movie_id = movie.movie_id) }}" method="POST">
+                  <input class="btn btn-danger" type="submit" id="delete-movie" value="Delete">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+{% endblock content %}
