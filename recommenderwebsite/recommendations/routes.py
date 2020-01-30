@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from recommenderwebsite import model, movie_vectors, book_vectors
 from recommenderwebsite.models import Ratings
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import normalize
 from pathlib import Path
 import pandas as pd
 import numpy as np 
@@ -48,10 +49,9 @@ def mean_vector(description_ratings):
 				Sum = Sum - ((des_sum/count) * ((average_rating - rate) + rate))
 			else:
 				Sum = Sum - ((des_sum/count))
-	if(len(ratings) == 1):
-		return (Sum/overall_rating)
-	else:
-		return (Sum/average_rating)
+	Sum = Sum.reshape(300,1)
+	Sum = normalize(Sum,axis=0)
+	return (Sum.reshape(300,))
 
 @recommendations.route('/recommend_books')
 @login_required
