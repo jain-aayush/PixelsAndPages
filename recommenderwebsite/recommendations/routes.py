@@ -65,11 +65,11 @@ def recommend_books():
 		sims = []
 		for book_vecs in book_vectors:
 		    try:
-		        sims.append(cosine_similarity(book_vecs,v1)[0][0])
+		        sims.append(np.linalg.norm(book_vecs-v1))
 		    except ValueError:
 		        sims.append([])
 		sims = list(enumerate(sims))
-		res = sorted(sims,key=lambda l:l[1], reverse=True)[:10]
+		res = sorted(sims,key=lambda l:l[1])[:10]
 		recommended_books = []
 		for book in res:
 			recommended_books.append(books.iloc[book[0]]['title'])
@@ -90,11 +90,11 @@ def recommend_movies():
 		sims = []
 		for movie_vecs in movie_vectors:
 		    try:
-		        sims.append(cosine_similarity(movie_vecs,v1)[0][0])
+		        sims.append(np.linalg.norm(movie_vecs-v1))
 		    except ValueError:
 		        sims.append([])
 		sims = list(enumerate(sims))
-		res = sorted(sims,key=lambda l:l[1], reverse=True)[:10]
+		res = sorted(sims,key=lambda l:l[1])[:10]
 		recommended_movies = []
 		for movie in res:
 			recommended_movies.append(movies.iloc[movie[0]]['title'])
