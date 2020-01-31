@@ -21,7 +21,7 @@ def mean_vector(description_ratings):
 	ratings = [list(i.values())[0] for i in description_ratings]
 	overall_rating = sum(ratings)
 	average_rating = overall_rating/len(ratings)
-	description = (' '.join(description)).lower()
+	description = ' '.join(description)
 	regex = re.compile('[^a-z \n]')
 	description = regex.sub('',description)
 	Sum = np.zeros((1,300))
@@ -30,12 +30,6 @@ def mean_vector(description_ratings):
 		count = 0
 		for word in des.split():
 			try:
-				word = word.replace('.','')
-				word = word.replace(' ','')
-				word = word.replace(',','')
-				word = word.replace(';','')
-				word = word.replace('"','')
-
 				des_sum = des_sum + model[word]
 				count = count + 1
 			except KeyError:
@@ -50,6 +44,7 @@ def mean_vector(description_ratings):
 			else:
 				Sum = Sum - ((des_sum/count))
 	Sum = Sum.reshape(300,1)
+	Sum = np.nan_to_num(Sum)
 	Sum = normalize(Sum,axis=0)
 	return (Sum.reshape(300,))
 
