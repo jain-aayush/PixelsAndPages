@@ -19,30 +19,35 @@ movies = pd.read_csv(current_working_directory/'recommenderwebsite/movie_dataset
 def mean_vector(description_ratings):
 	description = [list(i.keys())[0] for i in description_ratings]
 	ratings = [list(i.values())[0] for i in description_ratings]
-	overall_rating = sum(ratings)
-	average_rating = overall_rating/len(ratings)
-	description = ' '.join(description)
-	regex = re.compile('[^a-z \n]')
-	description = regex.sub('',description)
+	punctuations = ['.','!',';',',','?','-',':', "'",'"']
 	Sum = np.zeros((1,300))
-	for des,rate in zip(description,ratings):
+	for desc,rate in zip(description,ratings):
+		desc = str(desc)
+		words = desc.split()
+		new_desc_arr = []
+		for word in words:
+			if(word.endswith("n't")):
+				word = word.replace("n't",' not')
+				if(word == 'ca not'):
+					word = "cannot"
+			word = word.replace('  ',' ')
+			new_desc_arr.append(word)
+		new_desc = ' '.join(new_desc_arr)
+		for punc in punctuations:
+			new_desc = new_desc.replace(punc,' ')
+		new_desc = new_desc.replace('  ',' ')
 		des_sum = np.zeros((1,300))
 		count = 0
-		for word in des.split():
+		for word in new_desc.split():
 			try:
 				des_sum = des_sum + model[word]
 				count = count + 1
 			except KeyError:
 				continue
-		if(len(ratings) == 1):
-			Sum = Sum + ((des_sum/count)*rate)
+		if(rate >= 3):
+			Sum = Sum + (des_sum/count)
 		else:
-			if(rate - average_rating >= 0):
-				Sum = Sum + ((des_sum/count) * ((rate - average_rating) + rate))
-			elif(average_rating - rate > 1.2):
-				Sum = Sum - ((des_sum/count) * ((average_rating - rate) + rate))
-			else:
-				Sum = Sum - ((des_sum/count))
+			Sum = Sum - (des_sum/count)
 	Sum = Sum.reshape(300,1)
 	Sum = np.nan_to_num(Sum)
 	Sum = normalize(Sum,axis=0)
