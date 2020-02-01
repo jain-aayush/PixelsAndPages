@@ -35,7 +35,6 @@ book_vectors = pickle.load(open(current_working_directory/'recommenderwebsite/bo
 def create_app(config_class = Config):
 	app = Flask(__name__)
 	app.config.from_object(Config)
-	print(app.secret_key)
 
 	db.init_app(app)
 	bcrypt.init_app(app)
