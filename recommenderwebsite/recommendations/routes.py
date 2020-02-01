@@ -22,7 +22,7 @@ def mean_vector(description_ratings):
 	punctuations = ['.','!',';',',','?','-',':', "'",'"']
 	Sum = np.zeros((1,300))
 	for desc,rate in zip(description,ratings):
-		desc = str(desc)
+		desc = str(desc).lower()
 		words = desc.split()
 		new_desc_arr = []
 		for word in words:
