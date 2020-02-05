@@ -7,9 +7,7 @@
               <a class="mr-2" href="#">{{ book.authors[0].name }}</a>
             </div>
             <span style="float:right;">
-              <button type="button" class="btn btn-danger btn-sm ">
                 <small><a href="{{ url_for('books.get_ratings', book_id = book.gid) }}">Add Book +</a></small>
-              </button>
             </span>
             <a class="article-title" href="#">{{ book.title }}</a>
           </div>

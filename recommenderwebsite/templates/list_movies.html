@@ -7,9 +7,7 @@
               <a class="mr-2" href="#">{{ movie.director }}</a>
             </div>
             <span style="float:right;">
-              <button type="button" class="btn btn-danger btn-sm ">
                 <small><a href="{{ url_for('movies.get_ratings', movie_id = movie['id']) }}"> Add Movie +</small></a>
-              </button>
             </span>
             <a class="article-title" href="#">{{ movie['title'] }}</a>
           </div>
