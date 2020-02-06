@@ -4,7 +4,11 @@
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ movie.director }}</a>
+              {% if movie['release_date']  == "" %}
+                <a class="mr-2" href="#">Release Date : Unknown </a>
+              {% else %}
+                <a class="mr-2" href="#">Release Date : {{ movie['release_date'] }} </a>
+              {% endif %}
             </div>
             <span style="float:right;">
                 <small><a href="{{ url_for('movies.get_ratings', movie_id = movie['id']) }}"> Add Movie +</small></a>

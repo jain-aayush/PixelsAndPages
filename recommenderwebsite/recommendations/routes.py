@@ -19,10 +19,12 @@ movies = pd.read_csv(current_working_directory/'recommenderwebsite/movie_dataset
 def mean_vector(description_ratings):
 	description = [list(i.keys())[0] for i in description_ratings]
 	ratings = [list(i.values())[0] for i in description_ratings]
+	html_tags_remover = re.compile(r'<.*?>')
 	punctuations = ['.','!',';',',','?','-',':', "'",'"']
 	Sum = np.zeros((1,300))
 	for desc,rate in zip(description,ratings):
 		desc = str(desc).lower()
+		desc = html_tags_remover.sub('',desc)
 		words = desc.split()
 		new_desc_arr = []
 		for word in words:
