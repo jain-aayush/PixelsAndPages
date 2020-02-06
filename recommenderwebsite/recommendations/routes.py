@@ -25,6 +25,7 @@ def mean_vector(description_ratings):
 	for desc,rate in zip(description,ratings):
 		desc = str(desc).lower()
 		desc = html_tags_remover.sub('',desc)
+		desc = desc.replace(' ve ',' have ')
 		words = desc.split()
 		new_desc_arr = []
 		for word in words:
@@ -51,8 +52,6 @@ def mean_vector(description_ratings):
 		else:
 			Sum = Sum - (des_sum/count)
 	Sum = Sum.reshape(300,1)
-	Sum = np.nan_to_num(Sum)
-	Sum = normalize(Sum,axis=0)
 	return (Sum.reshape(300,))
 
 @recommendations.route('/recommend_books')
