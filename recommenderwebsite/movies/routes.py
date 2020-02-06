@@ -24,7 +24,7 @@ def search_movie():
 	form = SearchMovieForm()
 	if(form.validate_on_submit()):
 		search = tmdb.Search()
-		search.multi(query = form.search_term.data)
+		search.movie(query = form.search_term.data)
 		if(search.results):
 			return render_template('list_movies.html', movies = search.results)
 		else:
