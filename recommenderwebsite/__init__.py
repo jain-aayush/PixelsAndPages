@@ -34,7 +34,8 @@ book_vectors = pickle.load(open(current_working_directory/'recommenderwebsite/bo
 
 def create_app(config_class = Config):
 	app = Flask(__name__)
-	app.config.from_object(Config)
+	app.config.from_object(config_class)
+	print("Config" ,type(config_class))
 
 	db.init_app(app)
 	bcrypt.init_app(app)
@@ -54,5 +55,7 @@ def create_app(config_class = Config):
 	app.register_blueprint(main)
 	app.register_blueprint(errors)
 	app.register_blueprint(recommendations)
+
+	print(type(app))
 
 	return app
