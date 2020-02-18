@@ -9,6 +9,7 @@ movies = Blueprint('movies', __name__)
 @movies.route('/rate_movie/<int:movie_id>/get_ratings',methods = ['GET','POST'])
 @login_required
 def get_ratings(movie_id):
+	""" Route to get the Users rating of the Movie """
 	form = RatingsForm()
 	if(form.validate_on_submit()):
 		rating = Ratings(item = 'Movie',item_id = movie_id,rated_by = current_user.id
@@ -21,10 +22,11 @@ def get_ratings(movie_id):
 @movies.route('/search_movie', methods=['GET', 'POST'])
 @login_required
 def search_movie():
+	""" Route to ask the User for the Movie he wants to search and then displaying the result """
 	form = SearchMovieForm()
 	if(form.validate_on_submit()):
 		search = tmdb.Search()
-		search.movie(query = form.search_term.data)
+		search.movie(query = form.search_term.data) #using the tmdb api to search for movies
 		if(search.results):
 			return render_template('list_movies.html', movies = search.results)
 		else:
@@ -35,6 +37,7 @@ def search_movie():
 @movies.route('/add_movie/<int:movie_id>/add', methods=['GET','POST'])
 @login_required
 def add_movie(movie_id):
+	""" Route to add a Book to the list of books read by an User """
 	movie_to_add = tmdb.Movies(movie_id)
 	response = movie_to_add.info()
 	crew = movie_to_add.credits()['crew']
@@ -58,7 +61,7 @@ def add_movie(movie_id):
 @movies.route("/movies_watched/<int:movie_id>/delete",methods=['POST'])
 @login_required
 def delete_movie(movie_id):
-	#movie = Movie.query.get(movie_id)
+	""" Route to remove a book from the list of books read by a User """
 	movie = Movie.query.filter_by(movie_id = movie_id).first()
 	rating = Ratings.query.filter_by(item = 'Movie',item_id = movie_id, rated_by = current_user.id)
 	current_user.MoviesWatched.remove(movie)
