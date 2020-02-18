@@ -22,17 +22,21 @@ mail = Mail()
 current_working_directory = Path(os.getcwd())
 load_dotenv(os.path.join(current_working_directory, 'variables.env'))
 
+#setting up goodreads api
 goodreadsAPIKey = os.getenv('goodreadsAPIKey')
 goodreadsAPISecret = os.getenv('goodreadsAPISecret')
 gc = client.GoodreadsClient(goodreadsAPIKey,goodreadsAPISecret)
 
+#setting up tmdb movies api
 tmdb.API_KEY = os.getenv('tmdbAPIKey')
 
+#loading pretrained model and precomputed movies overview and books description vectors
 model = pickle.load(open(current_working_directory/'recommenderwebsite/word2vec.pkl','rb'))
 movie_vectors = pickle.load(open(current_working_directory/'recommenderwebsite/movies_overview_vectors.pkl','rb'))
 book_vectors = pickle.load(open(current_working_directory/'recommenderwebsite/books_description_vectors.pkl','rb'))
 
 def create_app(config_class = Config):
+	""" Application factory function """	
 	app = Flask(__name__)
 	app.config.from_object(config_class)
 

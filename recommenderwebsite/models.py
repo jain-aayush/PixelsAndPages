@@ -5,19 +5,24 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 @login_manager.user_loader
 def load_user(user_id):
+	""" Flask-Login function for user session management in Flask"""
+	print(type(User.query.get(int(user_id))))
 	return User.query.get(int(user_id))
 
+#helper(association) table for books and reader many-to-many relationship
 association_books = db.Table('association_books', db.Model.metadata,
     db.Column('Book_id', db.Integer, db.ForeignKey('book.book_id')),
     db.Column('Reader_id', db.Integer, db.ForeignKey('user.id'))
 )
 
+#helper(association) table for movies and watcher many-to-many relationship
 association_movies = db.Table('association_movies', db.Model.metadata,
 	db.Column('Movie_id', db.Integer, db.ForeignKey('movie.movie_id')),
     db.Column('Watcher_id', db.Integer, db.ForeignKey('user.id'))
 )
 
 class User(db.Model, UserMixin):
+	""" User Table """
 	__tablename__ = 'user'
 	id = db.Column(db.Integer, primary_key=True)
 	fullname = db.Column(db.String(50), nullable=False)
@@ -46,6 +51,7 @@ class User(db.Model, UserMixin):
 
 
 class Book(db.Model):
+	""" Books Table to store the book id, book title, author name and book description """
 	__tablename__ = 'book'
 	book_id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(50), nullable=False)
@@ -53,6 +59,7 @@ class Book(db.Model):
 	description = db.Column(db.Text)
 
 	def get_or_create(book_id,title,author,description):
+		""" Checks if a book entry is already present in the database and returns it. If not present creates a new entry and returns it."""
 		exists = db.session.query(Book.book_id).filter_by(book_id=book_id).scalar() is not None
 		if exists:
 			return Book.query.get(book_id)
@@ -62,6 +69,7 @@ class Book(db.Model):
 		return f"Book('{self.title}', '{self.author}')"
 
 class Movie(db.Model):
+	""" Movies Table to store movie id, movie title, director name and movie overview """
 	__tablename__ = 'movie'
 	movie_id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.String(100), nullable=False)
@@ -69,6 +77,7 @@ class Movie(db.Model):
 	overview = db.Column(db.Text)
 
 	def get_or_create(movie_id,title,director,overview):
+		""" Checks if a Movie entry is already present in the database and returns it. If not present creates a new entry and returns it."""
 		exists = db.session.query(Movie.movie_id).filter_by(movie_id=movie_id).scalar() is not None
 		if exists:
 			return Movie.query.get(movie_id)
@@ -78,6 +87,7 @@ class Movie(db.Model):
 		return f"Movie('{self.title}', '{self.director}')"
 
 class Ratings(db.Model):
+	""" Table to store the user ratings for books and movie """
 	__tablename__ = 'ratings'
 	ratings_id = db.Column(db.Integer, primary_key=True)
 	item = db.Column(db.String(5),nullable = False)
