@@ -11,6 +11,7 @@ users = Blueprint('users',__name__)
 
 @users.route("/login", methods = ['GET','POST'])
 def login():
+	""" Route for User Login """
 	form = LoginForm()
 	if(form.validate_on_submit()):
 		user = User.query.filter_by(email = form.email.data).first()
@@ -27,6 +28,7 @@ def login():
 
 @users.route("/register", methods = ['GET','POST'])
 def register():
+	""" Route for registration of new Users """
 	form = RegistrationForm()
 	if(form.validate_on_submit()):
 		hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -40,6 +42,7 @@ def register():
 
 @users.route('/logout')
 def logout():
+	""" Route to logout the current User """
 	logout_user()
 	flash('You have been logged out Successfully!', 'success')
 	return redirect(url_for('main.home'))
@@ -47,6 +50,7 @@ def logout():
 @users.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
+	""" Route to display the accouts page of the logged-in User """
 	form = UpdateAccountForm()
 	if(request.method == 'POST'):
 		if(form.validate_on_submit()):
@@ -70,11 +74,13 @@ def account():
 @users.route('/books_read', methods=['GET','POST'])
 @login_required
 def books_read():
+	""" Route to list the Books Read by the User """
 	books = current_user.BooksRead
 	return render_template('books_read.html', title = 'Books Read', books = books)
 
 @users.route("/reset_password", methods=['GET','POST'])
 def reset_request():
+	""" Route to allow User for a change in account password """
 	if(current_user.is_authenticated):
 		return redirect(url_for('main.home'))
 	form = RequestResetForm()
@@ -87,6 +93,7 @@ def reset_request():
 
 @users.route("/reset_password/<token>", methods=['GET','POST'])
 def reset_token(token):
+	""" Route to allow the User to reset their account password after requesting a change in password """
 	if(current_user.is_authenticated):
 		return redirect(url_for('main.home'))
 	user = User.verify_reset_token(token)
@@ -105,5 +112,6 @@ def reset_token(token):
 @users.route('/movies_watched', methods=['GET','POST'])
 @login_required
 def movies_watched():
+	""" Route to list the movies read by the User """
 	movies = current_user.MoviesWatched
 	return render_template('movies_watched.html', title = 'Movies Watched', movies = movies)
