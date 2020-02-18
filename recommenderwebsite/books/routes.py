@@ -9,6 +9,7 @@ books = Blueprint('books',__name__)
 @books.route('/rate_book/<int:book_id>/get_ratings',methods = ['GET','POST'])
 @login_required
 def get_ratings(book_id):
+	""" Route to get the Users rating of the Book """
 	form = RatingsForm()
 	if(form.validate_on_submit()):
 		rating = Ratings(item = 'Book',item_id = book_id,rated_by = current_user.id,
@@ -22,10 +23,11 @@ def get_ratings(book_id):
 @books.route('/search_book', methods=['GET', 'POST'])
 @login_required
 def search_book():
+	""" Route to ask the User for the Book he wants to search and then displaying the result """
 	form = SearchBookForm()
 	if(form.validate_on_submit()):
 		try:
-			search_results = gc.search_books(form.search_term.data)
+			search_results = gc.search_books(form.search_term.data) #using the goodreads api to search books
 			return render_template('list_books.html',books = search_results)
 		except TypeError:
 			flash('No Results Found', 'danger')
@@ -36,6 +38,7 @@ def search_book():
 @books.route('/add_book/<int:book_id>/add', methods=['GET','POST'])
 @login_required
 def add_book(book_id):
+	""" Route to add a Book to the list of books read by an User """
 	book_to_add = gc.book(book_id)
 	description = book_to_add.description
 	book = Book.get_or_create(book_id = book_id,title = book_to_add.title,
@@ -53,6 +56,7 @@ def add_book(book_id):
 @books.route("/books_read/<int:book_id>/delete",methods=['POST'])
 @login_required
 def delete_book(book_id):
+	""" Route to remove a book from the list of books read by a User """
 	book = Book.query.get(book_id)
 	rating = Ratings.query.filter_by(item = 'Book',item_id = book_id, rated_by = current_user.id)
 	current_user.BooksRead.remove(book)
