@@ -14,5 +14,5 @@ def home():
 @main.route("/about")
 def about():
 	""" Route for About Page """
-    return render_template('about.html', title='About')
+	return render_template('about.html', title='About')
 
