@@ -41,7 +41,7 @@ sklearn==0.0
 smart-open==1.8.4
 SQLAlchemy==1.3.3
 tmdbsimple==2.2.0
-urllib3==1.25.3
+urllib3==1.25.8
 Werkzeug==0.15.3
 WTForms==2.2.1
 xmltodict==0.12.0
